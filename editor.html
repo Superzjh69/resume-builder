@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>制作简历 - 简历工坊</title>
+<meta name="description" content="简历工坊在线编辑器：填写内容实时预览，三套模板一键切换，导出PDF。数据仅保存在本地浏览器。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+<!-- 工具栏 -->
+<div class="toolbar no-print">
+  <a class="brand" href="index.html">简历<em>工坊</em></a>
+
+  <div class="group">
+    <span class="lbl">模板</span>
+    <button type="button" class="tbtn tpl-btn active" data-tpl="classic">经典蓝</button>
+    <button type="button" class="tbtn tpl-btn" data-tpl="minimal">极简白</button>
+    <button type="button" class="tbtn tpl-btn" data-tpl="modern">现代侧栏</button>
+  </div>
+
+  <div class="group">
+    <span class="lbl">主题色</span>
+    <button type="button" class="swatch" data-color="#1d4ed8" style="background:#1d4ed8" title="稳重蓝"></button>
+    <button type="button" class="swatch" data-color="#0f766e" style="background:#0f766e" title="沉稳青"></button>
+    <button type="button" class="swatch" data-color="#b45309" style="background:#b45309" title="大地棕"></button>
+    <button type="button" class="swatch" data-color="#be185d" style="background:#be185d" title="洋红"></button>
+    <button type="button" class="swatch" data-color="#4d7c0f" style="background:#4d7c0f" title="橄榄绿"></button>
+    <button type="button" class="swatch" data-color="#374151" style="background:#374151" title="墨灰"></button>
+  </div>
+
+  <div class="group">
+    <span class="lbl">字号</span>
+    <button type="button" class="tbtn fs-btn" data-fs="12.5">小</button>
+    <button type="button" class="tbtn fs-btn active" data-fs="13.5">中</button>
+    <button type="button" class="tbtn fs-btn" data-fs="14.5">大</button>
+  </div>
+
+  <span class="spacer"></span>
+
+  <button type="button" class="btn-line" id="btnSample">示例数据</button>
+  <button type="button" class="btn-line" id="btnImport">导入</button>
+  <button type="button" class="btn-line" id="btnExport">备份JSON</button>
+  <button type="button" class="btn-line" id="btnClear">清空</button>
+  <button type="button" class="btn-accent" id="btnPrint">导出 PDF</button>
+  <input type="file" id="fileInput" accept=".json,application/json" style="display:none">
+</div>
+
+<div class="workspace">
+  <!-- 左侧表单 -->
+  <div class="form-pane no-print">
+
+    <div class="form-section">
+      <h3>基本信息</h3>
+      <div class="grid2">
+        <div class="field"><label>姓名</label><input data-bind="basic.name" placeholder="张三"></div>
+        <div class="field"><label>求职意向</label><input data-bind="basic.intent" placeholder="前端工程师"></div>
+        <div class="field"><label>电话</label><input data-bind="basic.phone" placeholder="138-0000-0000"></div>
+        <div class="field"><label>邮箱</label><input data-bind="basic.email" placeholder="zhangsan@mail.com"></div>
+        <div class="field"><label>城市</label><input data-bind="basic.city" placeholder="上海"></div>
+        <div class="field"><label>主页/GitHub（选填）</label><input data-bind="basic.site" placeholder="github.com/zhangsan"></div>
+      </div>
+      <div class="field">
+        <label>个人简介（2~3 句话概括亮点）</label>
+        <textarea data-bind="basic.summary" placeholder="3 年前端开发经验，主导过日活百万级 H5 项目重构，擅长性能优化与工程化建设。"></textarea>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3>教育经历 <span class="cnt" id="cntEdu"></span></h3>
+      <div id="listEdu"></div>
+      <button type="button" class="add-btn" data-action="add" data-list="education">＋ 添加教育经历</button>
+    </div>
+
+    <div class="form-section">
+      <h3>工作 / 实习经历 <span class="cnt" id="cntWork"></span></h3>
+      <div id="listWork"></div>
+      <button type="button" class="add-btn" data-action="add" data-list="work">＋ 添加经历</button>
+    </div>
+
+    <div class="form-section">
+      <h3>项目经历 <span class="cnt" id="cntProj"></span></h3>
+      <div id="listProj"></div>
+      <button type="button" class="add-btn" data-action="add" data-list="projects">＋ 添加项目</button>
+    </div>
+
+    <div class="form-section">
+      <h3>专业技能</h3>
+      <div class="field">
+        <textarea id="skillsInput" placeholder="每行一项，例如：&#10;熟练使用 Vue / React 及周边生态&#10;熟悉 Webpack / Vite 工程化配置"></textarea>
+        <div class="hint">每行一条，建议 4~8 条，按熟练程度排序。</div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3>荣誉 / 证书 <span class="cnt" id="cntHonor"></span></h3>
+      <div id="listHonor"></div>
+      <button type="button" class="add-btn" data-action="add" data-list="honors">＋ 添加荣誉</button>
+    </div>
+  </div>
+
+  <!-- 右侧预览 -->
+  <div class="preview-pane" id="previewPane">
+    <div class="rz-scale" id="rzScale">
+      <div class="resume" id="resumeRoot"></div>
+    </div>
+  </div>
+</div>
+
+<script src="js/editor.js"></script>
+</body>
+</html>
